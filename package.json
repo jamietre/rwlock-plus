@@ -1,0 +1,29 @@
+{
+  "name": "rwlock-plus",
+  "version": "1.0.0",
+  "description": "concurrency locking for nodejs",
+  "main": "lib/locker.js",
+  "scripts": {
+    "test": "mocha ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamietre/rwlock-plus.git"
+  },
+  "keywords": [
+    "concurrency",
+    "lock"
+  ],
+  "author": "James Treworgy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamietre/rwlock-plus/issues"
+  },
+  "homepage": "https://github.com/jamietre/rwlock-plus#readme",
+  "devDependencies": {
+    "mocha": "^2.3.0"
+  },
+  "dependencies": {
+    "rwlock": "^5.0.0"
+  }
+}
