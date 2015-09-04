@@ -15,7 +15,7 @@
     "lock"
   ],
   "author": "James Treworgy",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jamietre/rwlock-plus/issues"
   },
