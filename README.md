@@ -54,4 +54,3 @@ The same code above is fine now: if 10 seconds pass, the lock will be released. 
 Note that the callback still gets called both on your deliberate `release` as a result of an "on stream end" event, as well as the timeout. But when the timeout invokes the callback, an error is returned. Therefore, to be sure you only call the original callback once, you should always test for an error if using a callback in addition to invoking the original callback before releasing the lock.
 
 
-
