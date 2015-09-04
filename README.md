@@ -4,7 +4,16 @@ Extends [rwlock](https://github.com/71104/rwlock) with lock expiration and autom
 
 ###usage
 
-See [rwlock](https://github.com/71104/rwlock) for the basic usage. This changes the API:
+See [rwlock](https://github.com/71104/rwlock) for more details on the general locking concepts. An instance of rwlock-plus has a single API:
+
+    locker.[readLock|writeLock](resourceKey, releaseCallback, lockObtainedCallback(release))
+
+
+A *read lock* prevents a *write lock* from being obtained until it is released. A *write lock* prevents any other lock from being obtained until it is released. When locks are requested but not obtained, they are queued, and provisioned to the requester in the order received. This behavior is applied across each unique *resourceKey*. That is, locks obtained with different keys are completely independent.
+
+When a lock is obtained, the `lockObtainedCallback` is invoked with a single parameter, a function `release()` which should be invoked to release the lock. If a `releaseCallback` was provided, then invoking `release` will release the lock and also invoke `releaseCallback` with any arguments provided. This encapsulates a common use case - releasing the lock and subsequently invoking the method's original callback.
+
+Locks can have expirations, after a duration defined when creating an instance of `rwlock-plus`. If an expiration is defined, it will cause any unreleased lock to automatically be released *if another lock is waiting for the resource.*  That is, if nothing else has requested a lock for a given resource, then the lock will never expire automatically. However, if something subsequently requests a lock on a resource with an expired lock, it will be release immediately. When a lock is released as a result of expiration, the original callback (if provided) will be invoked with an error.
 
 	var RWlock = require('rwlock-plus')
 
@@ -14,6 +23,7 @@ See [rwlock](https://github.com/71104/rwlock) for the basic usage. This changes 
 
 	    release();
 	});
+
 
 `key` is required; any locks on the same key are held across any other locks requested for the same key.
 
