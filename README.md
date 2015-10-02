@@ -36,6 +36,8 @@ Locks can have expirations, after a duration defined when creating an instance o
 
 `key` is required; any locks on the same key are held across any other locks requested for the same key.
 
+*Why doesn't a lock just automatcally call the release whenever the timeout passes?* The underlying assumption is that if nobody is waiting for a lock, there's no reason to create an expiration event. This permits a more forgiving approach to resource allocation. It also allows significant optimization by eliminating the need for timers for the first lock obtained -- perhaps most locks, depending on actual usage. That is, a timer is not set when a lock is provided; rather, one is only set if a lock is requested that *could not be obtained*. So, unless a queue exists for a given resource, a timer is never needed.
+
 #####calling back before releasing the lock
 
 When `release` is called, it also invokes `callback`. This ensures you will always release your locks before calling the callback. In situations
