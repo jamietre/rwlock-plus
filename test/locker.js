@@ -87,6 +87,8 @@ describe('Locker', function() {
     var locker = new Locker(200)
 
     function cb(err) {
+      assert.ok(err)
+      assert.ok(err instanceof Error)
       assert.ok(err && err.message.match(lockError))
     }
 
