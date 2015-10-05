@@ -1,8 +1,8 @@
-###rwlock-plus
+### rwlock-plus
 
 Extends [rwlock](https://github.com/71104/rwlock) with lock expiration and automatic invocation of a callback. 
 
-###usage
+### usage
 
 See [rwlock](https://github.com/71104/rwlock) for more details on the general locking concepts. An instance of rwlock-plus has this API:
 
@@ -18,7 +18,7 @@ When a lock is obtained, the `lockObtainedCallback` is invoked with a single par
 
 Arguments passed to `release` will be forwarded to `releaseCallback`. Therefore, if the original callback has an error argument as its first parameter, calling `release` with an error will respect the underlying api and pass the error the the callback. Since there are no error conditions associated with the lock obtained callback, there is no error argument.
 
-#####expirations
+##### expirations
 
 Locks can have expirations, after a duration defined when creating an instance of `rwlock-plus`. If an expiration is defined, it will cause any unreleased lock to automatically be released *if another lock is waiting for the resource.*  That is, if nothing else has requested a lock for a given resource, then the lock will never expire automatically. However, if something subsequently requests a lock on a resource with an expired lock, it will be release immediately. When a lock is released as a result of expiration, the original callback (if provided) will be invoked with an error.
 
@@ -38,7 +38,7 @@ Locks can have expirations, after a duration defined when creating an instance o
 
 *Why doesn't a lock just automatcally call the release whenever the timeout passes?* The underlying assumption is that if nobody is waiting for a lock, there's no reason to create an expiration event. This permits a more forgiving approach to resource allocation. It also allows significant optimization by eliminating the need for timers for the first lock obtained -- perhaps most locks, depending on actual usage. That is, a timer is not set when a lock is provided; rather, one is only set if a lock is requested that *could not be obtained*. So, unless a queue exists for a given resource, a timer is never needed.
 
-#####calling back before releasing the lock
+##### calling back before releasing the lock
 
 When `release` is called, it also invokes `callback`. This ensures you will always release your locks before calling the callback. In situations
 where you want to call the callback without release a lock, e.g. you return a resource immediately that must remain locked until some activity completes, such a stream, you can omit this parameter:
